@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 export default function Home() {
   const [email, setEmail] = useState('');
+  const [agreed, setAgreed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -12,35 +13,39 @@ export default function Home() {
     setLoading(true);
     setError('');
     
+    // チェックボックスの確認
+    if (!agreed) {
+      setError('チェックボックスにチェックを入れてください');
+      setLoading(false);
+      return;
+    }
+    
     try {
-      // ============================================
-      // TODO: Google Formを作成したら以下を設定
-      // ============================================
-      const FORM_ID = '1FAIpQLScClwTgsTS2KtP8ARF9uWXg6EimAJlZkPRmcUM-AhExGOPerg'; // Google FormのIDをここに貼る
-      const ENTRY_ID = '1032374180'; // Entry IDをここに貼る（数字のみ）
+      const FORM_ID = '1FAIpQLScClwTgsTS2KtP8ARF9uWXg6EimAJlZkPRmcUM-AhExGOPerg';
+      const EMAIL_ENTRY_ID = '62852513';
+      const CHECKBOX_ENTRY_ID = '1032374180';
       
-      // Google FormのURL
       const formUrl = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
       
       // フォームデータを作成
       const formData = new FormData();
-      formData.append(`entry.${ENTRY_ID}`, email);
+      formData.append(`entry.${EMAIL_ENTRY_ID}`, email);
+      formData.append(`entry.${CHECKBOX_ENTRY_ID}`, 'はい'); // チェックボックスの値
       
       // Google Formに送信
       await fetch(formUrl, {
         method: 'POST',
         body: formData,
-        mode: 'no-cors', // CORSエラー回避（成功/失敗の判定はできないが送信はされる）
+        mode: 'no-cors',
       });
       
-      // 成功
       setSubmitted(true);
-      setEmail(''); // フォームをリセット
+      setEmail('');
+      setAgreed(false);
       
     } catch (err) {
       console.error('送信エラー:', err);
-      // no-corsモードでは実際にはエラーは起きないが、念のため
-      setSubmitted(true);
+      setSubmitted(true); // no-corsなので実際は送信されている
     } finally {
       setLoading(false);
     }
@@ -94,6 +99,19 @@ export default function Home() {
                   placeholder="your-email@example.com"
                   className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                
+                {/* チェックボックス */}
+                <label className="flex items-start gap-3 text-left cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                    className="mt-1 w-4 h-4 rounded border-white/30 bg-white/20 text-blue-500 focus:ring-2 focus:ring-blue-500"
+                  />
+                  <span className="text-gray-300 text-sm">
+                    ベータ版リリース時の案内メールを受け取ることに同意します
+                  </span>
+                </label>
                 
                 {error && (
                   <p className="text-red-400 text-sm">{error}</p>
