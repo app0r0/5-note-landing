@@ -3,22 +3,24 @@ import { useState } from 'react';
 
 export default function Home() {
   const [email, setEmail] = useState('');
-  const [agreed, setAgreed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [concerns, setConcerns] = useState({
+    unclear: false,
+    paywall: false,
+    lowBenefit: false,
+  });
+
+  const handleCheckboxChange = (key) => {
+    setConcerns(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    
-    // チェックボックスの確認
-    if (!agreed) {
-      setError('チェックボックスにチェックを入れてください');
-      setLoading(false);
-      return;
-    }
     
     try {
       const FORM_ID = '1FAIpQLScClwTgsTS2KtP8ARF9uWXg6EimAJlZkPRmcUM-AhExGOPerg';
@@ -30,7 +32,17 @@ export default function Home() {
       // フォームデータを作成
       const formData = new FormData();
       formData.append(`entry.${EMAIL_ENTRY_ID}`, email);
-      formData.append(`entry.${CHECKBOX_ENTRY_ID}`, 'はい'); // チェックボックスの値
+      
+      // チェックされた項目を送信
+      if (concerns.unclear) {
+        formData.append(`entry.${CHECKBOX_ENTRY_ID}`, 'どんなサイトかわからない');
+      }
+      if (concerns.paywall) {
+        formData.append(`entry.${CHECKBOX_ENTRY_ID}`, '課金のハードルが高い');
+      }
+      if (concerns.lowBenefit) {
+        formData.append(`entry.${CHECKBOX_ENTRY_ID}`, 'ユーザー側のメリットが小さい');
+      }
       
       // Google Formに送信
       await fetch(formUrl, {
@@ -41,11 +53,11 @@ export default function Home() {
       
       setSubmitted(true);
       setEmail('');
-      setAgreed(false);
+      setConcerns({ unclear: false, paywall: false, lowBenefit: false });
       
     } catch (err) {
       console.error('送信エラー:', err);
-      setSubmitted(true); // no-corsなので実際は送信されている
+      setSubmitted(true);
     } finally {
       setLoading(false);
     }
@@ -90,7 +102,8 @@ export default function Home() {
                 ベータ版リリース時にお知らせします
               </p>
               
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* メールアドレス */}
                 <input
                   type="email"
                   required
@@ -101,21 +114,47 @@ export default function Home() {
                 />
                 
                 {/* チェックボックス */}
-                <label className="flex items-start gap-3 text-left cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={agreed}
-                    onChange={(e) => setAgreed(e.target.checked)}
-                    className="mt-1 w-4 h-4 rounded border-white/30 bg-white/20 text-blue-500 focus:ring-2 focus:ring-blue-500"
-                  />
-                  <span className="text-gray-300 text-sm">
-                    ベータ版リリース時の案内メールを受け取ることに同意します
-                  </span>
-                </label>
-                
-                {error && (
-                  <p className="text-red-400 text-sm">{error}</p>
-                )}
+                <div className="text-left space-y-3">
+                  <p className="text-white text-sm font-medium mb-3">
+                    サイトにほしい機能・不安点（複数選択可）
+                  </p>
+                  
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={concerns.unclear}
+                      onChange={() => handleCheckboxChange('unclear')}
+                      className="mt-1 w-4 h-4 rounded border-white/30 bg-white/20 text-blue-500 focus:ring-2 focus:ring-blue-500"
+                    />
+                    <span className="text-gray-300 text-sm group-hover:text-white transition">
+                      どんなサイトかわからない
+                    </span>
+                  </label>
+                  
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={concerns.paywall}
+                      onChange={() => handleCheckboxChange('paywall')}
+                      className="mt-1 w-4 h-4 rounded border-white/30 bg-white/20 text-blue-500 focus:ring-2 focus:ring-blue-500"
+                    />
+                    <span className="text-gray-300 text-sm group-hover:text-white transition">
+                      課金のハードルが高い
+                    </span>
+                  </label>
+                  
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={concerns.lowBenefit}
+                      onChange={() => handleCheckboxChange('lowBenefit')}
+                      className="mt-1 w-4 h-4 rounded border-white/30 bg-white/20 text-blue-500 focus:ring-2 focus:ring-blue-500"
+                    />
+                    <span className="text-gray-300 text-sm group-hover:text-white transition">
+                      ユーザー側のメリットが小さい
+                    </span>
+                  </label>
+                </div>
                 
                 <button
                   type="submit"
@@ -127,7 +166,7 @@ export default function Home() {
               </form>
               
               <p className="text-gray-500 text-xs mt-4">
-                登録いただいたメールアドレスは、ベータ版の案内以外には使用しません。
+                登録いただいた情報は、サービス改善とベータ版の案内のみに使用します。
               </p>
             </div>
           ) : (
@@ -137,8 +176,8 @@ export default function Home() {
                 登録完了！
               </h2>
               <p className="text-gray-300 mb-4">
-                ベータ版リリース時にご連絡します。<br />
-                お楽しみに！
+                貴重なご意見ありがとうございます。<br />
+                ベータ版リリース時にご連絡します。
               </p>
               <button
                 onClick={() => setSubmitted(false)}
