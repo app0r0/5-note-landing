@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
-
+import Image from 'next/image'; 
 export default function Home() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -36,15 +36,15 @@ export default function Home() {
       
       const formData = new FormData();
       formData.append(`entry.${EMAIL_ENTRY_ID}`, email);
-      
-      if (concerns.unclear) {
+       if (concerns.unclear) {
         formData.append(`entry.${CHECKBOX_ENTRY_ID}`, 'どんなサイトかわからない');
       }
       if (concerns.paywall) {
         formData.append(`entry.${CHECKBOX_ENTRY_ID}`, '課金のハードルが高い');
       }
       if (concerns.lowBenefit) {
-        formData.append(`entry.${CHECKBOX_ENTRY_ID}`, '読者側のメリットが小さい');
+        // "読者側" を "ユーザー側" に修正（UIと一致させる）
+        formData.append(`entry.${CHECKBOX_ENTRY_ID}`, 'ユーザー側のメリットが小さい');
       }
       if (otherComment.trim()) {
   formData.append(`entry.${OTHER_ENTRY_ID}`, otherComment);
@@ -89,7 +89,7 @@ export default function Home() {
       <header className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-           <img src="/favicon.ico" alt="5-note ロゴ" className="w-8 h-8" />
+           <Image src="/favicon.ico" alt="5-note ロゴ" width={32} height={32} />
             <span className="text-white text-xl font-bold">ふぁいぶの～と</span>
           </div>
           
@@ -380,8 +380,9 @@ export default function Home() {
                   商店街型経済
                 </div>
                 <h2 className="text-4xl font-bold text-white mb-6">
-                  5円から。<br />クリエイターを"直接支援"。
+                  5円から。<br />クリエイターを&quot;直接支援&quot;。
                 </h2>
+                
                 <p className="text-gray-300 text-lg mb-6">
                   記事を読むのに5円。おひねりで追加支援も。noteのように一部のスターだけが稼ぐのではなく、商店街のようにクリエイター同士がお互いを支え合う経済圏を目指します！
                 </p>
@@ -392,7 +393,8 @@ export default function Home() {
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-green-400 mt-1">✓</span>
-                    <span>”無限のいいね”より”5円”の方が嬉しい</span>
+                    <span>&rdquo;無限のいいね&rdquo;より&rdquo;5円&rdquo;の方が嬉しい</span>
+                    
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-green-400 mt-1">✓</span>
