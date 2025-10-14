@@ -94,7 +94,7 @@ export default function Home() {
           </div>
           
           <a
-            href="https://note.com/YOUR_NOTE_ID"
+            href="https://note.com/5_note_notekyoku"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-300 hover:text-white transition text-sm flex items-center gap-2"
