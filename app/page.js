@@ -71,7 +71,7 @@ export default function Home() {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const shareText = 'ふぁいぶの～と 月5記事!';
+  const shareText = 'ふぁいぶのーと 月5記事!';
   const shareUrl = 'https://www.5-note.com';
 
   const shareOnX = () => {
@@ -90,7 +90,7 @@ export default function Home() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
            <Image src="/favicon.ico" alt="5-note ロゴ" width={32} height={32} />
-            <span className="text-white text-xl font-bold">ふぁいぶの～と</span>
+            <span className="text-white text-xl font-bold">ふぁいぶのーと</span>
           </div>
           
           <a
@@ -99,7 +99,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="text-gray-300 hover:text-white transition text-sm flex items-center gap-2"
           >
-            <span>📝 AIがあるnoteでも宣伝中。</span>
+            <span>📝 いっぱい記事があるnoteでも宣伝中。</span>
           </a>
         </div>
       </header>
@@ -107,16 +107,16 @@ export default function Home() {
       <main className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            クリエイターがたった一つだけ伝えるサイト。<br/>
+            クリエイターがたった一つだけ伝えるサイト<br/>
             <span className="text-blue-400">高品質なnote</span>
           </h1>
           
           <p className="text-xl text-gray-300 mb-4">
-            月5記事だけ。読むのも月150記事まで。
+            月5記事だけ。読むのも一日5記事。月150記事まで。
           </p>
           <p className="text-lg text-gray-400 mb-8">
-            記事厳選版のnote。
-            AIに埋もれない、本当に面白いコンテンツとの出会い。<br />
+            凝縮されたnote。
+            AIの大量生産記事に埋もれない、本当に面白いコンテンツとの出会い。<br />
             クリエイター同士が支え合う「商店街型」プラットフォーム。
           </p>
           <div className="flex justify-center gap-4 mb-12">
@@ -253,7 +253,7 @@ export default function Home() {
               <div className="text-4xl mb-4">📝</div>
               <h3 className="text-xl font-bold text-white mb-2">月5記事まで</h3>
               <p className="text-gray-400">
-                量より質。本当に書きたいものだけを。
+                量より質。本当に書きたいものだけを。<br/>一度書いた記事も、何度も更新。記事を「育てる」note
               </p>
               <p className="text-blue-400 text-sm mt-4">クリックして詳細を見る ↓</p>
             </button>
@@ -265,7 +265,7 @@ export default function Home() {
               <div className="text-4xl mb-4">🛡️</div>
               <h3 className="text-xl font-bold text-white mb-2">ブレインロット防止</h3>
               <p className="text-gray-400">
-                月150記事まで。時間を奪われない設計。
+                読めるのは、1日5記事まで。時間を奪われない設計
               </p>
               <p className="text-blue-400 text-sm mt-4">クリックして詳細を見る ↓</p>
             </button>
@@ -295,7 +295,7 @@ export default function Home() {
                   量より質。<br />本当に書きたいものだけを。
                 </h2>
                 <p className="text-gray-300 text-lg mb-6">
-                  AIで大量生産された記事に埋もれていませんか？ ふぁいぶのーと では、クリエイターが月に投稿できるのは5記事だけ。この制限が、本当に伝えたいことだけを厳選する文化を生み出します。
+                  AIで大量生産されたうす～い記事に埋もれていませんか？ ふぁいぶのーと では、クリエイターが月に投稿できるのは5記事だけ。この制限が、本当に伝えたいことだけを厳選する文化を生み出します。
                 </p>
                 <ul className="space-y-3 text-gray-400">
                   <li className="flex items-start gap-3">
